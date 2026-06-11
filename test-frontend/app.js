@@ -1,4 +1,5 @@
 const BUILT_IN_DATASETS = [
+  { label: "All Batches", path: "../outputs/all_batches_raw_classes.json" },
   { label: "1st Year A", path: "../outputs/1st_year_a_raw_classes.json" },
   { label: "1st Year B", path: "../outputs/1st_year_b_raw_classes.json" },
   { label: "2nd Year A", path: "../outputs/2nd_year_a_raw_classes.json" },
@@ -373,6 +374,9 @@ function compactMeta(entry) {
   if (entry.teacher) {
     parts.push(entry.teacher);
   }
+  if (entry.source_sheet) {
+    parts.push(entry.source_sheet.replaceAll("_", " "));
+  }
   return parts.filter(Boolean).join(" | ");
 }
 
@@ -390,6 +394,9 @@ function tooltipText(entry) {
   ];
   if (entry.place || entry.teacher) {
     lines.push([entry.place, entry.teacher].filter(Boolean).join(" | "));
+  }
+  if (entry.source_sheet) {
+    lines.push(`Source: ${entry.source_sheet}`);
   }
   if (entry.raw?.length) {
     lines.push(`Raw: ${entry.raw.join(" / ")}`);
