@@ -6,7 +6,7 @@ from functools import lru_cache
 from pathlib import Path
 
 
-DEFAULT_SUBJECTS_PATH = Path(__file__).resolve().parents[2] / "subjects.json"
+DEFAULT_SUBJECTS_PATH = Path(__file__).resolve().parents[2] / "assets" / "subjects.json"
 
 
 @dataclass(frozen=True)

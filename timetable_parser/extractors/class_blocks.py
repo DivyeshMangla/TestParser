@@ -54,6 +54,8 @@ class ClassBlockExtractor:
                     if slot.sr_no in consumed_slots:
                         continue
 
+                    # A merged cell can span multiple SR NO rows, so one successful block may consume
+                    # several following slots for this batch/day pair.
                     block = cls.extract_from_slot(
                         sheet=sheet,
                         merge_bounds=merge_bounds,
@@ -104,6 +106,7 @@ class ClassBlockExtractor:
             if not rectangle_has_raw(sheet, slot.cell.row, period_end_row, base_bounds):
                 break
 
+            # Keep extending while adjacent slot rows belong to the same visible class box.
             periods += 1
             max_row = period_end_row
             raw_cells.extend(raw_cells_in_bounds(sheet, slot.cell.row, period_end_row, base_bounds))
@@ -118,6 +121,8 @@ class ClassBlockExtractor:
         if not raw:
             return None
 
+        # Elective cells can contain several subject codes; the primary code anchors the
+        # block while options preserve the individual subject/place/teacher combinations.
         subject_codes = find_subject_codes(raw)
         subject_code = subject_codes[0] if subject_codes else find_subject_code(raw)
         subject_name = subject_catalog.name_for(subject_code)
